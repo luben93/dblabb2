@@ -354,7 +354,7 @@ public class View extends JFrame {
 
 				// TODO TRANSAKTION. KLAR
 				try {
-					dri.AddTransaction(artist.getText(), song.getText(),
+					dri.AddData(artist.getText(), song.getText(),
 							BoxOptions[BoxOptionSelected]);
 				} catch (NullValueExecption e) {
 					javax.swing.JOptionPane.showMessageDialog(null,
