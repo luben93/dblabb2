@@ -22,7 +22,7 @@ public class Connector implements DatabaseConnection{
 	@Override
 	public void start() {
 		// TODO Auto-generated method stub
-		EventQueue.invokeLater(new Runnable() {
+		/*EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
 					frame = new View(Connector.this);
@@ -33,7 +33,7 @@ public class Connector implements DatabaseConnection{
 					// e.printStackTrace();// test only
 				}
 			}
-		});
+		});*/
 		
 		try {
 			mongoClient = new MongoClient( ip );
