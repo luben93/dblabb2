@@ -2,6 +2,11 @@ package controller;
 
 public class DatabaseErrorExecption extends Exception {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6451640096227750792L;
+
 	public DatabaseErrorExecption() {
 		// TODO Auto-generated constructor stub
 	}

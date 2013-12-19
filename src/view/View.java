@@ -1,9 +1,5 @@
 package view;
 
-//public class View {
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -18,14 +14,11 @@ import java.awt.event.ItemListener;
 
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JTextPane;
 import javax.swing.JTextArea;
 
 import java.awt.Color;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
-import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 
 import controller.DatabaseErrorExecption;
@@ -33,6 +26,10 @@ import controller.NullValueExecption;
 
 public class View extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 205738919097347141L;
 	private JPanel contentPane;
 	private int BoxOptionSelected;
 	private int searchChoice;
@@ -41,6 +38,7 @@ public class View extends JFrame {
 	private ArrayList<String> tempArtist = new ArrayList<String>();
 	private String tempAlbum;
 	private String tempGenre;
+	private String tempRating;
 
 	/**
 	 * Launch the application.
@@ -367,6 +365,7 @@ public class View extends JFrame {
 					tempAlbum = song.getText();
 					tempGenre = BoxOptions[BoxOptionSelected];
 					tempArtist.add(artist.getText());
+					tempRating ="";
 					
 					textArea.setVisible(false);
 					comboBox.setVisible(false);
@@ -403,7 +402,7 @@ public class View extends JFrame {
 
 				// TODO
 				try {
-					dri.AddData(tempArtist, tempAlbum, tempGenre);
+					dri.AddData(tempArtist, tempAlbum, tempGenre, tempRating);
 				} catch (NullValueExecption e) {
 					javax.swing.JOptionPane.showMessageDialog(null,
 							"Fill in Album and Artist. ( " + e.toString());

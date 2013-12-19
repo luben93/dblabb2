@@ -4,7 +4,6 @@ package controller;
 import java.util.ArrayList;
 
 	import model.Album;
-import view.View;
 	
 	/**
 	 * the actual controller, handle all communication between the view and the
@@ -15,7 +14,7 @@ import view.View;
 	 */
 public interface DatabaseConnection {
 		
-		 String ip = "83.250.249.187", user = "steffe", pwd = "stefanborivalla", database = "labb1a";
+		 String ip = "83.250.249.187", user = "", pwd = "", database = "";
 
 		/**
 		 * start is the equivalent of the constructor
@@ -36,7 +35,7 @@ public interface DatabaseConnection {
 		// * @throws SQLException 
 		 * @return 
 		 */
-		public boolean AddData(ArrayList<String> artist, String album, String genre)throws DatabaseErrorExecption ,NullValueExecption;
+		public boolean AddData(ArrayList<String> artist, String album, String genre, String rating)throws DatabaseErrorExecption ,NullValueExecption;
 		
 		
 		//public void AddAnotherArtistToAlbum(String artist, String album)throws DatabaseErrorExecption,NullValueExecption ;

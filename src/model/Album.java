@@ -1,9 +1,5 @@
 package model;
 
-import java.util.ArrayList;
-
-import com.mongodb.DBObject;
-
 public class Album {
 	private Object album, genre, artist, rating;
 

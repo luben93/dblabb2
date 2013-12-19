@@ -4,11 +4,6 @@ import java.awt.EventQueue;
 import java.net.UnknownHostException;
 import java.sql.Connection;
 import java.util.ArrayList;
-import java.util.List;
-
-import org.bson.BSONObject;
-import org.bson.types.BasicBSONList;
-
 import com.mongodb.*;
 
 import view.View;
@@ -58,7 +53,7 @@ public class Connector implements DatabaseConnection {
 	}
 
 	@Override
-	public boolean AddData(ArrayList<String> artist, String album, String genre)
+	public boolean AddData(ArrayList<String> artist, String album, String genre, String rating)
 			throws DatabaseErrorExecption, NullValueExecption {
 
 		ArrayList<Album> temp;
@@ -70,11 +65,12 @@ public class Connector implements DatabaseConnection {
 		// search albums for duplicates before adding
 		BasicDBObject albums = null;
 		for (int i = 0; i < artist.size(); i++) {
-			albums = new BasicDBObject("album", album).append("genre", genre)
-					.append("artist", artist.get(i));
-			System.out.println(artist.size());
+			albums = new BasicDBObject(DBType.album.toString(), album).append(DBType.genre.toString(), genre)
+					.append(DBType.rating.toString(), rating).append(DBType.artist.toString(), artist.get(i));
+
 			for (int j = 0; j < temp.size(); j++) {
-				if (temp.get(j).getAlbum().equals(albums.get(DBType.album.toString()))) {
+				if (temp.get(j).getAlbum()
+						.equals(albums.get(DBType.album.toString()))) {
 					throw new DatabaseErrorExecption("Duplicate was not added.");
 				}
 			}
@@ -114,35 +110,26 @@ public class Connector implements DatabaseConnection {
 	public void updateRating(String rating, String SelectedRow)
 			throws DatabaseErrorExecption {
 
-		BasicDBObject Search = new BasicDBObject(DBType.album.toString(),
-				SelectedRow);
-		/*
-		 * BasicDBObject Update = new BasicDBObject(); //Update.append("$set",
-		 * new BasicDBObject().append(DBType.rating.toString(), rating));
-		 * //Update = Search.append(DBType.rating.toString(), rating);
-		 * Update.put(DBType.rating.toString(), rating);
-		 * AlbColl.update(Search,Update);
-		 */
-		BasicDBObject set = new BasicDBObject("$set", new BasicDBObject(
-				DBType.album.toString(), SelectedRow));
-		set.append("$set", new BasicDBObject(DBType.rating.toString(), rating));
-		AlbColl.update(Search, set);
+		
+	/*	BasicDBObject Search = new BasicDBObject(DBType.album.toString(),SelectedRow);
+		BasicDBObject Update = new BasicDBObject() ;
+		Update.append("$set", new BasicDBObject().append(DBType.rating.toString(), rating));		
+		//Update = Search.append(DBType.rating.toString(), rating);
+		Update.put(DBType.rating.toString(), rating);
+		AlbColl.update(Search,Update);*/
 
-		/*
-		 * BasicDBObject Update = new BasicDBObject();
-		 * Update.put(DBType.rating.toString(), rating);
-		 * 
-		 * BasicDBObject Search = new
-		 * BasicDBObject().append(DBType.album.toString(), SelectedRow);
-		 * 
-		 * AlbColl.update(Search, Update);
-		 */
+		
+		
+		BasicDBObject Update = new BasicDBObject().append("$set", new BasicDBObject().append(DBType.rating.toString(), rating));
+	 
+		BasicDBObject Search = new BasicDBObject().append(DBType.album.toString(), SelectedRow);
+	 
+		AlbColl.updateMulti(Search, Update);
 	}
 
 	@Override
-	public ArrayList<Album> getLatestQueryResults()
-			throws DatabaseErrorExecption {
-		if (results == null || results.isEmpty()) {
+	public ArrayList<Album> getLatestQueryResults() throws DatabaseErrorExecption {
+		if(results==null ||results.isEmpty()){
 			throw new DatabaseErrorExecption("database returned nothing");
 		}
 		return results;

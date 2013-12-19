@@ -11,7 +11,12 @@ import model.Album;
 public class JTableModel extends JFrame {
 	
 
-  public JTableModel(ArrayList<Album> values ) {
+  /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1118468655799940955L;
+
+public JTableModel(ArrayList<Album> values ) {
     setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     
     Object[][] data =new Object[values.size()][4];
