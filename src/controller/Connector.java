@@ -87,6 +87,9 @@ public class Connector implements DatabaseConnection {
 	// }
 
 	// @Override
+	/**
+	 * searches after an exact match
+	 */
 	public void Search(DBType type, String SearchedText)
 			throws DatabaseErrorExecption {
 		BasicDBObject query = new BasicDBObject(type.toString(), SearchedText);
