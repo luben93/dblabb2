@@ -2,51 +2,38 @@ package model;
 
 import java.util.ArrayList;
 
+import com.mongodb.DBObject;
+
 public class Album {
-	private String album, genre, rating, artist;
+	private Object album, genre, artist, rating;
 
 	public Album() {
 		System.out.println("just smile and wave boys :)");
 	}
 
-	public Album(String album, String genre, String rating, String artist) {
+	public Album(Object album, Object artist, Object genre, Object rating) {
 		this.album = album;
 		this.artist = artist;
 		this.genre = genre;
 		this.rating = rating;
 	}
 
-	public void setAlbum(String album) {
-		this.album = album;
-	}
 
-	public void setArtis(String artist) {
-		this.artist = artist;
-	}
-
-	public void setGenre(String genre) {
-		this.genre = genre;
-	}
-
-
-	public void setRating(String rating) {
-		this.rating = rating;
-	}
 
 	public String getAlbum() {
-		return album;
+		return album.toString();
 	}
 
 	public String getArtist() {
-		return artist;
+		return artist.toString();
 	}
 
 	public String getGenre() {
-		return genre;
+		return genre.toString();
 	}
 
 	public String getRating() {
-		return rating;
+		return rating.toString();
 	}
 
 
@@ -60,10 +47,10 @@ public class Album {
 
 	public String[] getArray() {
 		String[] temp = new String [4];
-		temp[0]= album;
-		temp[1]=genre;
-		temp[2]=rating;
-		temp[3]=artist;
+		temp[0]= album.toString();
+		temp[1]=genre.toString();
+		temp[2]=rating.toString();
+		temp[3]=artist.toString();
 
 
 		return temp;

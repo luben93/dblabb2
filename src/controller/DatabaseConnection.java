@@ -34,11 +34,12 @@ public interface DatabaseConnection {
 		 * @param album
 		 * @param genre
 		// * @throws SQLException 
+		 * @return 
 		 */
-		public void AddData(String artist, String album, String genre)throws DatabaseErrorExecption ,NullValueExecption;
+		public boolean AddData(ArrayList<String> artist, String album, String genre)throws DatabaseErrorExecption ,NullValueExecption;
 		
 		
-		public void AddAnotherArtistToAlbum(String artist, String album)throws DatabaseErrorExecption,NullValueExecption ;
+		//public void AddAnotherArtistToAlbum(String artist, String album)throws DatabaseErrorExecption,NullValueExecption ;
 
 		/**
 		 * Search contains a select SQL statment
@@ -52,7 +53,7 @@ public interface DatabaseConnection {
 		 */
 		
 		//TODO SEARCH
-		public void Search(String SearchColumn, String SearchedText, String Table)throws DatabaseErrorExecption ;
+		public void Search(DBType type, String SearchedText)throws DatabaseErrorExecption ;
 		
 		//TODO 
 		/**
@@ -73,7 +74,7 @@ public interface DatabaseConnection {
 		public void updateRating(String rating, String SelectedRow)throws DatabaseErrorExecption;
 
 		//@SuppressWarnings("unchecked")
-		public ArrayList<Album> getLatestQueryResults() ;
+		public ArrayList<Album> getLatestQueryResults() throws DatabaseErrorExecption ;
 
 
 		

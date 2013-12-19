@@ -23,6 +23,7 @@ import javax.swing.JTextArea;
 
 import java.awt.Color;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
@@ -37,6 +38,10 @@ public class View extends JFrame {
 	private int searchChoice;
 	private String value = null;
 	private JTable table;
+	private ArrayList<String> tempArtist = new ArrayList<String>();
+	private String tempAlbum;
+	private String tempGenre;
+
 	/**
 	 * Launch the application.
 	 * 
@@ -58,16 +63,16 @@ public class View extends JFrame {
 		contentPane.setLayout(null);
 
 		this.addWindowListener(new java.awt.event.WindowAdapter() {
-		      @Override
-		      public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-		         //dont forget to 
-		       //System.out.println("goodbye");
-		          dri.terminateCon();    
-		       System.exit(0);
-		          
-		      }
-		  });
-		
+			@Override
+			public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+				// dont forget to
+				// System.out.println("goodbye");
+				dri.terminateCon();
+				System.exit(0);
+
+			}
+		});
+
 		final JButton add = new JButton("Add record");
 		add.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -189,12 +194,13 @@ public class View extends JFrame {
 		});
 		SubmitSearch.setBounds(280, 168, 89, 23);
 		contentPane.add(SubmitSearch);
-		
-		final String[] BoxOptions_1 = { "","Worst", "Bad", "Okey", "Good", "Best"};
+
+		final String[] BoxOptions_1 = { "", "Worst", "Bad", "Okey", "Good",
+				"Best" };
 		final JComboBox comboBox_1 = new JComboBox(BoxOptions_1);
 		comboBox_1.setBounds(357, 11, 77, 20);
 		contentPane.add(comboBox_1);
-		
+
 		final JButton SubmitRate = new JButton("Submit");
 		SubmitRate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -202,11 +208,12 @@ public class View extends JFrame {
 		});
 		SubmitRate.setBounds(345, 75, 89, 23);
 		contentPane.add(SubmitRate);
-		
-		final JLabel AddNewArtistToAlbum = new JLabel("Add another artist to the album ?");
+
+		final JLabel AddNewArtistToAlbum = new JLabel(
+				"Add another artist to the album ?");
 		AddNewArtistToAlbum.setBounds(36, 38, 339, 27);
 		contentPane.add(AddNewArtistToAlbum);
-		
+
 		final JButton Yes = new JButton("Yes");
 		Yes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -214,7 +221,7 @@ public class View extends JFrame {
 		});
 		Yes.setBounds(46, 94, 89, 23);
 		contentPane.add(Yes);
-		
+
 		final JButton No = new JButton("No");
 		No.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -222,7 +229,7 @@ public class View extends JFrame {
 		});
 		No.setBounds(164, 94, 89, 23);
 		contentPane.add(No);
-		
+
 		final JButton SubmitNewArtist = new JButton("Submit");
 		SubmitNewArtist.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -230,7 +237,7 @@ public class View extends JFrame {
 		});
 		SubmitNewArtist.setBounds(78, 108, 89, 23);
 		contentPane.add(SubmitNewArtist);
-		
+
 		comboBox_1.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent event) {
 				if (event.getStateChange() == ItemEvent.SELECTED) {
@@ -238,8 +245,7 @@ public class View extends JFrame {
 				}
 			}
 		});
-		
-		
+
 		textArea.setVisible(false);
 		comboBox.setVisible(false);
 		textArea2.setVisible(false);
@@ -264,14 +270,13 @@ public class View extends JFrame {
 		No.setVisible(false);
 		SubmitNewArtist.setVisible(false);
 
-
 		rate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				add.setVisible(false);
 				search.setVisible(false);
 				rate.setVisible(false);
-				
-				//TODO RATE
+
+				// TODO RATE
 				try {
 					dri.selectAll();
 				} catch (DatabaseErrorExecption e1) {
@@ -279,42 +284,48 @@ public class View extends JFrame {
 							"Database error. ( " + e.toString());
 					e1.printStackTrace();
 				}
-				
-				Object[][] data =new Object[dri.getLatestQueryResults().size()][4];
-				data[0]=new Object[] {"Album","Genre","Rating","Artist"};
-			    for(int i=1; i<dri.getLatestQueryResults().size();i++){
 
-			            	data[i][0]=dri.getLatestQueryResults().get(i).getAlbum();
-			            	data[i][1]=dri.getLatestQueryResults().get(i).getGenre();
-			            	data[i][2]=dri.getLatestQueryResults().get(i).getRating();
-			            	data[i][3]=dri.getLatestQueryResults().get(i).getArtist();
-			    }
-			    
+				Object[][] data = null;
+				try {
+					data = new Object[dri.getLatestQueryResults().size()][4];
 				
-			    table = new JTable(data,
-			    		new Object[] { "Album","Genre","Rating","Artist" }
-			    		);
+				data[0] = new Object[] { "Album", "Genre", "Rating", "Artist" };
+				for (int i = 1; i < dri.getLatestQueryResults().size(); i++) {
+
+					data[i][0] = dri.getLatestQueryResults().get(i-1).getAlbum();
+					data[i][1] = dri.getLatestQueryResults().get(i-1).getGenre();
+					data[i][2] = dri.getLatestQueryResults().get(i-1).getRating();
+					data[i][3] = dri.getLatestQueryResults().get(i-1).getArtist();
+				}
+} catch (DatabaseErrorExecption e1) {
+	javax.swing.JOptionPane.showMessageDialog(null,
+			"Database error. ( " + e1.toString()+")");
+	e1.printStackTrace();
+				}
+				table = new JTable(data, new Object[] { "Album", "Genre",
+						"Rating", "Artist" });
 				table.setBounds(0, 0, 347, 262);
 				contentPane.add(table);
-				table.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
-			        public void valueChanged(ListSelectionEvent event) {
-			           value =  table.getValueAt(table.getSelectedRow(), 0).toString();
-			        }
-			    });
-				
+				table.getSelectionModel().addListSelectionListener(
+						new ListSelectionListener() {
+							public void valueChanged(ListSelectionEvent event) {
+								value = table.getValueAt(
+										table.getSelectedRow(), 0).toString();
+							}
+						});
+
 				table.setVisible(true);
 				comboBox_1.setVisible(true);
 				SubmitRate.setVisible(true);
 			}
 		});
 
-		
 		SubmitRate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 
-				
-				
 				try {
+					System.out.println(BoxOptions_1[BoxOptionSelected]);
+					System.out.println(value);
 					dri.updateRating(BoxOptions_1[BoxOptionSelected], value);
 				} catch (DatabaseErrorExecption e) {
 					javax.swing.JOptionPane.showMessageDialog(null,
@@ -324,14 +335,13 @@ public class View extends JFrame {
 				table.setVisible(false);
 				comboBox_1.setVisible(false);
 				SubmitRate.setVisible(false);
-				
+
 				add.setVisible(true);
 				search.setVisible(true);
 				rate.setVisible(true);
 			}
 		});
-		
-		
+
 		add.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 
@@ -353,35 +363,34 @@ public class View extends JFrame {
 			public void actionPerformed(ActionEvent ae) {
 
 				// TODO TRANSAKTION. KLAR
-				try {
-					dri.AddData(artist.getText(), song.getText(),
-							BoxOptions[BoxOptionSelected]);
-				} catch (NullValueExecption e) {
+				if (!song.getText().equals("") && !artist.getText().equals("")) {
+					tempAlbum = song.getText();
+					tempGenre = BoxOptions[BoxOptionSelected];
+					tempArtist.add(artist.getText());
+					
+					textArea.setVisible(false);
+					comboBox.setVisible(false);
+					textArea2.setVisible(false);
+					artist.setVisible(false);
+					textArea3.setVisible(false);
+					song.setVisible(false);
+					btnMenu.setVisible(false);
+					btnSubmit.setVisible(false);
+					AddNewArtistToAlbum.setVisible(true);
+					Yes.setVisible(true);
+					No.setVisible(true);
+					
+				} else {
 					javax.swing.JOptionPane.showMessageDialog(null,
-							"Fill in Album and Artist. ( " + e.toString());
-					e.printStackTrace();
-				} catch (DatabaseErrorExecption e) {
-					javax.swing.JOptionPane.showMessageDialog(null,
-							"Database error. ( " + e.toString());
-					e.printStackTrace();
+							"Fill in Album and Artist. ");
 				}
 
-				textArea.setVisible(false);
-				comboBox.setVisible(false);
-				textArea2.setVisible(false);
-				artist.setVisible(false);
-				textArea3.setVisible(false);
-				song.setVisible(false);
-				btnMenu.setVisible(false);
-				btnSubmit.setVisible(false);
-				AddNewArtistToAlbum.setVisible(true);
-				Yes.setVisible(true);
-				No.setVisible(true);
-				
-				
+				// dri.AddData(artist.getText(), song.getText(),
+				// BoxOptions[BoxOptionSelected]);
+
 			}
 		});
-		
+
 		No.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 
@@ -391,9 +400,20 @@ public class View extends JFrame {
 				add.setVisible(true);
 				search.setVisible(true);
 				rate.setVisible(true);
+
+				// TODO
+				try {
+					dri.AddData(tempArtist, tempAlbum, tempGenre);
+				} catch (NullValueExecption e) {
+					javax.swing.JOptionPane.showMessageDialog(null,
+							"Fill in Album and Artist. ( " + e.toString());
+				} catch (DatabaseErrorExecption e) {
+					javax.swing.JOptionPane.showMessageDialog(null,
+							"Database error. ( " + e.toString()+")");
+				}
 			}
 		});
-		
+
 		Yes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 
@@ -404,33 +424,31 @@ public class View extends JFrame {
 				SubmitNewArtist.setVisible(true);
 			}
 		});
-		
+
 		SubmitNewArtist.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 
-				textArea2.setVisible(false);
-				artist.setVisible(false);
-				SubmitNewArtist.setVisible(false);
-				No.setVisible(true);
-				Yes.setVisible(true);
-				
-				//TODO ADD NEW ANOTHER ARTIST TO THE ALBUM. LAGRAD PROCEDUR. KLAR
-				
-				try {
-					dri.AddAnotherArtistToAlbum(artist.getText(), song.getText());
-				} catch (NullValueExecption e) {
+				// TODO ADD NEW ANOTHER ARTIST TO THE ALBUM. LAGRAD PROCEDUR.
+				// KLAR
+
+				// dri.AddAnotherArtistToAlbum(artist.getText(),
+				// song.getText());
+				if (!artist.getText().equals("")) {
+					tempArtist.add(artist.getText());
+					
+					textArea2.setVisible(false);
+					artist.setVisible(false);
+					SubmitNewArtist.setVisible(false);
+					No.setVisible(true);
+					Yes.setVisible(true);
+					
+				} else {
 					javax.swing.JOptionPane.showMessageDialog(null,
-					"Fill in Artist. ( " + e.toString());
-					e.printStackTrace();
-				} catch (DatabaseErrorExecption e) {
-					javax.swing.JOptionPane.showMessageDialog(null,
-					"No rights... paska! ( " + e.toString());
-					e.printStackTrace();
+							"Fill in Artist.");
 				}
-				
 			}
 		});
-		
+
 		btnMenu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 
@@ -504,62 +522,86 @@ public class View extends JFrame {
 
 		SubmitSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				
+
 				if (searchChoice == 1) {
 					System.out.println(ArtistTextSearch.getText());
 					ArtistTextSearch.setVisible(false);
 					try {
-						dri.Search("artist", ArtistTextSearch.getText(), "album");
+						dri.Search(controller.DBType.artist, ArtistTextSearch.getText());
 					} catch (DatabaseErrorExecption e) {
 						javax.swing.JOptionPane.showMessageDialog(null,
 								"Databse error. ( " + e.toString());
 						e.printStackTrace();
 					}
-					
-					JTableModel model = new JTableModel(dri.getLatestQueryResults());
-					
+
+					try {
+						JTableModel model = new JTableModel(dri
+								.getLatestQueryResults());
+					} catch (DatabaseErrorExecption e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+
 				}
 				// *TODO
 				if (searchChoice == 2) {
 					System.out.println(TitleTextSearch.getText());
 					TitleTextSearch.setVisible(false);
 					try {
-						dri.Search("albumid", TitleTextSearch.getText(), "album");
+						dri.Search(controller.DBType.album, TitleTextSearch.getText());
 					} catch (DatabaseErrorExecption e) {
 						javax.swing.JOptionPane.showMessageDialog(null,
 								"Databse error. ( " + e.toString());
 						e.printStackTrace();
 					}
-					
-					JTableModel model = new JTableModel(dri.getLatestQueryResults());
+
+					try {
+						JTableModel model = new JTableModel(dri
+								.getLatestQueryResults());
+					} catch (DatabaseErrorExecption e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 				// *TODO
 				if (searchChoice == 3) {
 					System.out.println(GenreTextSearch.getText());
 					GenreTextSearch.setVisible(false);
 					try {
-						dri.Search("genre", GenreTextSearch.getText(), "album");
+						dri.Search(controller.DBType.genre, GenreTextSearch.getText());
 					} catch (DatabaseErrorExecption e) {
 						javax.swing.JOptionPane.showMessageDialog(null,
 								"Databse error. ( " + e.toString());
 						e.printStackTrace();
 					}
-					
-					JTableModel model = new JTableModel(dri.getLatestQueryResults());
+
+					try {
+						JTableModel model = new JTableModel(dri
+								.getLatestQueryResults());
+					} catch (DatabaseErrorExecption e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 				// *TODO
 				if (searchChoice == 4) {
 					System.out.println(RatingTextSearch.getText());
 					RatingTextSearch.setVisible(false);
 					try {
-						dri.Search("rating", RatingTextSearch.getText(), "album");
+						dri.Search(controller.DBType.rating, RatingTextSearch.getText());
 					} catch (DatabaseErrorExecption e) {
 						javax.swing.JOptionPane.showMessageDialog(null,
 								"Databse error. ( " + e.toString());
 						e.printStackTrace();
 					}
-					
-					JTableModel model = new JTableModel(dri.getLatestQueryResults());
+
+					try {
+						JTableModel model = new JTableModel(dri
+								.getLatestQueryResults());
+					} catch (DatabaseErrorExecption e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 
 				add.setVisible(true);
